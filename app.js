@@ -1,6 +1,6 @@
 const DB_KEY = 'sentry-tsrp-v1';
-const seed = { owner: { name:'Director', username:'director', password:'3383', role:'Director' }, members:[
- {id:1,name:'Director',rank:'Director',code:'TSRP-DIR-01',status:'On Duty',lastLogin:'Never'}],
+const seed = { owner: { name:'Director Boucher', username:'director', password:'3383', role:'Director' }, members:[
+ {id:1,name:'Director Boucher',rank:'Director',code:'TSRP-DIR-01',status:'On Duty',lastLogin:'Never'}],
  codes:[], escorts:[], schedules:[], logs:[] };
 let db = JSON.parse(localStorage.getItem(DB_KEY) || 'null') || seed;
 db.accounts ||= [{username:'director',password:'3383',name:'Director Harper',role:'Director'}];
@@ -27,6 +27,14 @@ if (hadSampleData) {
     const directorMember = db.members.find(member => member.code === 'TSRP-DIR-01');
     if (directorMember) directorMember.name = 'Director';
   }
+  localStorage.setItem(DB_KEY, JSON.stringify(db));
+}
+if (db.owner?.username === 'director' && ['Director Harper', 'Director'].includes(db.owner.name)) {
+  db.owner.name = 'Director Boucher';
+  const directorAccount = db.accounts.find(account => account.username === 'director');
+  if (directorAccount) directorAccount.name = 'Director Boucher';
+  const directorMember = db.members.find(member => member.code === 'TSRP-DIR-01');
+  if (directorMember) directorMember.name = 'Director Boucher';
   localStorage.setItem(DB_KEY, JSON.stringify(db));
 }
 let session = JSON.parse(sessionStorage.getItem('sentry-user') || 'null'); let page='Dashboard';
