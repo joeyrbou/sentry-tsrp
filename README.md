@@ -15,7 +15,7 @@ npm start
 Then open `http://localhost:3000`. On first launch, use:
 
 - Username: `director`
-- Password: `sentry`
+- Password: `3383`
 
 Change these credentials before hosting it for real users.
 

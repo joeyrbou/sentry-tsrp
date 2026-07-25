@@ -1,5 +1,5 @@
 const DB_KEY = 'sentry-tsrp-v1';
-const seed = { owner: { name:'Director Harper', username:'director', password:'sentry', role:'Director' }, members:[
+const seed = { owner: { name:'Director Harper', username:'director', password:'3383', role:'Director' }, members:[
  {id:1,name:'Director Harper',rank:'Director',code:'TSRP-DIR-01',status:'On Duty',lastLogin:'Today, 9:41 AM'},
  {id:2,name:'A. Mitchell',rank:'Deputy Director',code:'TSRP-DD-14',status:'On Duty',lastLogin:'Today, 8:53 AM'},
  {id:3,name:'J. Carter',rank:'Special Agent',code:'TSRP-SA-27',status:'Off Duty',lastLogin:'Yesterday, 10:16 PM'}],
@@ -7,7 +7,14 @@ const seed = { owner: { name:'Director Harper', username:'director', password:'s
  escorts:[{id:1,principal:'Governor Williams',requester:'Executive Office',date:'Jul 28, 2026 · 7:00 PM',location:'Capitol Building',status:'Assigned',notes:'Arrival and departure escort.',agents:'A. Mitchell, J. Carter'}, {id:2,principal:'Mayor Collins',requester:'City of Nashville',date:'Jul 30, 2026 · 6:30 PM',location:'Nashville Civic Center',status:'Pending',notes:'Public appearance security.',agents:'—'}],
  schedules:[{id:1,title:'Capitol Detail',date:'Jul 28',time:'6:30 PM',agents:'Mitchell, Carter'},{id:2,title:'Command Briefing',date:'Jul 29',time:'7:00 PM',agents:'All Supervisors'}], logs:[] };
 let db = JSON.parse(localStorage.getItem(DB_KEY) || 'null') || seed;
-db.accounts ||= [{username:'director',password:'sentry',name:'Director Harper',role:'Director'}];
+db.accounts ||= [{username:'director',password:'3383',name:'Director Harper',role:'Director'}];
+// Upgrade existing browser data from the original prototype password.
+if (db.owner?.username === 'director' && db.owner.password === 'sentry') {
+  db.owner.password = '3383';
+  const directorAccount = db.accounts.find(account => account.username === 'director');
+  if (directorAccount?.password === 'sentry') directorAccount.password = '3383';
+  localStorage.setItem(DB_KEY, JSON.stringify(db));
+}
 let session = JSON.parse(sessionStorage.getItem('sentry-user') || 'null'); let page='Dashboard';
 const save=()=>localStorage.setItem(DB_KEY,JSON.stringify(db)); const $=s=>document.querySelector(s);
 function esc(v=''){return String(v).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));}
